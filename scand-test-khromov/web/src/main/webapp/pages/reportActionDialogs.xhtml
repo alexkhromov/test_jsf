@@ -1,0 +1,163 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <!-- **********************************ACTION DIALOGS FOR REOPRT************************************************* -->
+
+    <p:dialog id="reportAddDialog" header="Report Adding" widgetVar="repoAddDialog" resizable="true" modal="true"
+              width="800" showEffect="explode" hideEffect="explode" dynamic="true">
+
+        <h:form id="reportAddDialogForm">
+
+            <h:panelGrid id="displayReportAddGrid" columns="2" cellpadding="4">
+
+                <h:outputText value="Create Date:"/>
+                <h:outputText value="#{report.createDate}">
+                    <f:convertDateTime type="date" dateStyle="medium"/>
+                </h:outputText>
+
+                <h:outputText value="Project:"/>
+                <p:selectOneMenu id="dropDownProjectAddDialog" value="#{report.project}" required="true"
+                                 converter="#{projectConverter}" effect="drop">
+                    <f:selectItem itemLabel="---choose project---" itemValue=""/>
+                    <f:selectItems value="#{project.projects}" var="proj" itemLabel="#{proj.name}" itemValue="#{proj}"/>
+                    <p:ajax listener="#{report.onProjectSelect}" update=":#{p:component('dropDownEmployeeAddDialog')}"/>
+                </p:selectOneMenu>
+
+                <h:outputText value="Employee:"/>
+                <p:selectOneMenu id="dropDownEmployeeAddDialog" value="#{report.employee}" required="true"
+                                 converter="#{employeeConverter}" effect="drop">
+                    <f:selectItem itemLabel="---choose employee---" itemValue=""/>
+                    <f:selectItems value="#{report.availableEmployees}" var="emp" itemLabel="#{emp.name}"
+                                   itemValue="#{emp}"/>
+                    <p:ajax listener="#{report.onEmployeeSelect}"/>
+                </p:selectOneMenu>
+
+                <h:outputText value="Body:"/>
+                <p:inputTextarea id="newBodyForNewReport" value="#{report.body}" cols="50" rows="10" required="true"/>
+
+                <p:commandButton id="cancelReportAdd" value="Cancel">
+                    <p:ajax listener="#{report.onCloseDialog}"/>
+                </p:commandButton>
+                <p:commandButton id="saveReportAdd" value="Save" icon="ui-icon-disk"
+                                 action="#{report.addReport}"
+                                 update=":reportForm:reporttable"
+                                 oncomplete="reportAddDialog.hide()"/>
+
+            </h:panelGrid>
+
+        </h:form>
+
+    </p:dialog>
+
+    <p:dialog id="reportDeleteDialog" header="Report Deleting" widgetVar="repoDeleteDialog" resizable="true"
+              modal="true"
+              width="800" showEffect="explode" hideEffect="explode" dynamic="true">
+
+        <h:form>
+
+            <h:panelGrid id="displayReportDeleteGrid" columns="2" cellpadding="4">
+
+                <h:outputText value="Report ID:"/>
+                <h:outputText value="#{report.reportSelected.id}"/>
+
+                <h:outputText value="Create Date:"/>
+                <h:outputText value="#{report.reportSelected.createDate}">
+                    <f:convertDateTime type="date" dateStyle="medium"/>
+                </h:outputText>
+
+                <h:outputText value="Body:"/>
+                <h:outputText value="#{report.reportSelected.body}"/>
+
+                <p:commandButton id="cancelReportDelete" value="Cancel" action="#{report.onCloseDialog}"
+                                 oncomplete="reportDeleteDialog.hide()"/>
+                <p:commandButton id="deleteReportDelete" value="Delete"
+                                 action="#{report.deleteReport}"
+                                 update=":projectForm:projecttable :reportForm:reporttable"
+                                 onclick="reportDeleteDialog.hide()"/>
+
+            </h:panelGrid>
+
+        </h:form>
+
+    </p:dialog>
+
+    <p:dialog id="reportEditDialog" header="Report Editing" widgetVar="repoEditDialog" resizable="true" modal="true"
+              width="800" showEffect="explode" hideEffect="explode" dynamic="true">
+
+        <h:form id="reportEditDialogForm">
+
+            <h:panelGrid id="displayReportEditGrid" columns="2" cellpadding="4">
+
+                <h:outputText value="Create Date:"/>
+                <h:outputText value="#{report.reportSelected.createDate}">
+                    <f:convertDateTime type="date" dateStyle="medium"/>
+                </h:outputText>
+
+                <h:outputText value="Project:"/>
+                <p:selectOneMenu id="dropDownProjectEditDialog" value="#{report.reportSelected.project}" required="true"
+                                 converter="#{projectConverter}" effect="drop">
+                    <f:selectItems value="#{project.projects}" var="proj" itemLabel="#{proj.name}" itemValue="#{proj}"/>
+                    <p:ajax listener="#{report.onEditProjectSelect}"
+                            update=":#{p:component('dropDownEmployeeEditDialog')}"/>
+                </p:selectOneMenu>
+
+                <h:outputText value="Employee:"/>
+                <p:selectOneMenu id="dropDownEmployeeEditDialog" value="#{report.reportSelected.employee}"
+                                 required="true"
+                                 converter="#{employeeConverter}" effect="drop">
+                    <f:selectItem itemLabel="---choose employee---" itemValue=""/>
+                    <f:selectItems value="#{report.availableEmployees}" var="emp" itemLabel="#{emp.name}"
+                                   itemValue="#{emp}"/>
+                    <p:ajax listener="#{report.onEditEmployeeSelect}"/>
+                </p:selectOneMenu>
+
+                <h:outputText value="Body:"/>
+                <p:inputTextarea id="editBodyForOldReport" value="#{report.reportSelected.body}" cols="50" rows="10"
+                                 required="true"/>
+
+                <p:commandButton id="cancelReportEdit" value="Cancel">
+                    <p:ajax listener="#{report.onCloseDialog}"/>
+                </p:commandButton>
+                <p:commandButton id="saveReportEdit" value="Save" icon="ui-icon-disk"
+                                 action="#{report.editReport}"
+                                 update=":reportForm:reporttable"
+                                 oncomplete="reportEditDialog.hide()"/>
+
+            </h:panelGrid>
+
+        </h:form>
+
+    </p:dialog>
+
+    <p:dialog id="reportViewDialog" header="Report Detail" widgetVar="repoViewDialog" resizable="true" modal="true"
+              width="800" showEffect="explode" hideEffect="explode">
+
+        <h:form>
+
+            <h:panelGrid id="displayReportViewGrid" columns="2" cellpadding="4">
+
+                <h:outputText value="Report ID:"/>
+                <h:outputText value="#{report.reportSelected.id}"/>
+
+                <h:outputText value="Create Date:"/>
+                <h:outputText value="#{report.reportSelected.createDate}">
+                    <f:convertDateTime type="date" dateStyle="medium"/>
+                </h:outputText>
+
+                <h:outputText value="Body:"/>
+                <h:outputText value="#{report.reportSelected.body}"/>
+
+                <p:commandButton id="closeReportView" value="Close" action="#{report.onCloseDialog}"
+                                 oncomplete="reportViewDialog.hide()"/>
+
+            </h:panelGrid>
+
+        </h:form>
+
+    </p:dialog>
+
+</ui:composition>

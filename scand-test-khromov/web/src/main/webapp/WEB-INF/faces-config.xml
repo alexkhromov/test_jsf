@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+              version="2.0">
+
+    <application>
+        <el-resolver>
+            org.springframework.web.jsf.el.SpringBeanFacesELResolver
+        </el-resolver>
+    </application>
+
+    <managed-bean>
+        <managed-bean-name>employee</managed-bean-name>
+        <managed-bean-class>scand.by.test.controller.EmployeeManagedBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+        <managed-property>
+            <property-name>employeeFacade</property-name>
+            <value>#{employeeFacade}</value>
+        </managed-property>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>project</managed-bean-name>
+        <managed-bean-class>scand.by.test.controller.ProjectManagedBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+        <managed-property>
+            <property-name>projectFacade</property-name>
+            <value>#{projectFacade}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>employeeFacade</property-name>
+            <value>#{employeeFacade}</value>
+        </managed-property>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>report</managed-bean-name>
+        <managed-bean-class>scand.by.test.controller.ReportManagedBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+        <managed-property>
+            <property-name>reportFacade</property-name>
+            <value>#{reportFacade}</value>
+        </managed-property>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>projectConverter</managed-bean-name>
+        <managed-bean-class>scand.by.test.controller.ProjectConverterManagedBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+        <managed-property>
+            <property-name>projectFacade</property-name>
+            <value>#{projectFacade}</value>
+        </managed-property>
+    </managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>employeeConverter</managed-bean-name>
+        <managed-bean-class>scand.by.test.controller.EmployeeConverterManagedBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+        <managed-property>
+            <property-name>employeeFacade</property-name>
+            <value>#{employeeFacade}</value>
+        </managed-property>
+    </managed-bean>
+
+    <navigation-rule>
+
+        <from-view-id>/pages/mainForm.xhtml</from-view-id>
+
+        <navigation-case>
+            <from-action>#{report.addReport}</from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/pages/reportActionDialogs.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-action>#{report.deleteReport}</from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/pages/reportActionDialogs.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-action>#{report.editReport}</from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/pages/reportActionDialogs.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-action>#{report.reportSelected}</from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/pages/reportActionDialogs.xhtml</to-view-id>
+        </navigation-case>
+
+        <navigation-case>
+            <from-action>#{employee.addEmployee}</from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/pages/employeeActionDialogs.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-action>#{employee.deleteEmployee}</from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/pages/employeeActionDialogs.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-action>#{employee.editEmployee}</from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/pages/employeeActionDialogs.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-action>#{employee.employeeSelected}</from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/pages/employeeActionDialogs.xhtml</to-view-id>
+        </navigation-case>
+
+        <navigation-case>
+            <from-action>#{project.addProject}</from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/pages/projectActionDialogs.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-action>#{project.deleteProject}</from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/pages/projectActionDialogs.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-action>#{project.editProject}</from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/pages/projectActionDialogs.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-action>#{project.projectSelected}</from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/pages/projectActionDialogs.xhtml</to-view-id>
+        </navigation-case>
+
+    </navigation-rule>
+
+</faces-config>

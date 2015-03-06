@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <title>SCAND TEST</title>
+    <style type="text/css">
+        .commandBtn {
+            width: 220px;
+        }
+    </style>
+</h:head>
+
+<h:body>
+
+    <p:layout fullPage="true">
+
+        <p:layoutUnit position="north" size="40">
+            <p:outputLabel>SCAND TEST - PREPARED BY ALEXANDER KHROMOV ( JSF + SPRING + HIBERNATE + MAVEN )</p:outputLabel>
+        </p:layoutUnit>
+
+        <ui:include src="/pages/mainForm.xhtml"/>
+        <ui:include src="/pages/reportActionDialogs.xhtml"/>
+        <ui:include src="/pages/employeeActionDialogs.xhtml"/>
+        <ui:include src="/pages/projectActionDialogs.xhtml"/>
+
+    </p:layout>
+
+</h:body>
+</html>

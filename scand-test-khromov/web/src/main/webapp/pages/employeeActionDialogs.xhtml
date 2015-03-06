@@ -1,0 +1,183 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <!-- **********************************ACTION DIALOGS FOR EMPLOYEE********************************************* -->
+
+    <p:dialog id="employeeAddDialog" header="Employee Adding" widgetVar="empAddDialog" resizable="true" modal="true"
+              width="800" showEffect="explode" hideEffect="explode" dynamic="true">
+
+        <h:form id="employeeAddDialogForm">
+
+            <h:panelGrid id="displayEmployeeAddGrid" columns="2" cellpadding="4">
+
+                <h:outputText value="Name:"/>
+                <p:inputText value="#{employee.name}" required="true"/>
+
+                <h:outputText value="Hire Date:"/>
+                <p:inputText id="addEmployeeHireDate" value="#{employee.hireDate}" required="true">
+                    <f:convertDateTime pattern="yyyy-MM-dd"/>
+                    <p:watermark for="addEmployeeHireDate" value="yyyy-MM-dd"/>
+                </p:inputText>
+
+                <h:outputText value="Position:"/>
+                <p:inputText value="#{employee.position}" required="true"/>
+
+                <h:outputText value="Salary:"/>
+                <p:inputText value="#{employee.salary}" required="true"/>
+
+                <h:outputText value="Assign Projects:"/>
+                <p:selectManyMenu id="dropDownEmployeeAddDialog" value="#{employee.projects}" required="true"
+                                  converter="#{projectConverter}" effect="drop" style="width:300px">
+                    <f:selectItems value="#{project.projects}" var="proj" itemLabel="#{proj.name}" itemValue="#{proj}"/>
+                    <p:ajax listener="#{employee.onProjectSelect}"/>
+                </p:selectManyMenu>
+
+                <p:commandButton id="cancelEmployeeAdd" value="Cancel">
+                    <p:ajax listener="#{employee.onCloseDialog}"/>
+                </p:commandButton>
+                <p:commandButton id="saveEmployeetAdd" value="Save" icon="ui-icon-disk"
+                                 action="#{employee.addEmployee}"
+                                 update=":employeeForm:employeetable"
+                                 oncomplete="employeeAddDialog.hide()"/>
+
+            </h:panelGrid>
+
+        </h:form>
+
+    </p:dialog>
+
+    <p:dialog id="employeeDeleteDialog" header="Employee Deleting" widgetVar="empDeleteDialog" resizable="true"
+              modal="true" width="800" showEffect="explode" hideEffect="explode" dynamic="true">
+
+        <h:form>
+
+            <h:panelGrid id="displayEmployeeDeleteGrid" columns="2" cellpadding="4">
+
+                <h:outputText value="Employee ID:"/>
+                <h:outputText value="#{employee.employeeSelected.id}"/>
+
+                <h:outputText value="Name:"/>
+                <h:outputText value="#{employee.employeeSelected.name}"/>
+
+                <h:outputText value="Hire Date:"/>
+                <h:outputText value="#{employee.employeeSelected.hireDate}">
+                    <f:convertDateTime type="date" dateStyle="medium"/>
+                </h:outputText>
+
+                <h:outputText value="Position:"/>
+                <h:outputText value="#{employee.employeeSelected.position}"/>
+
+                <h:outputText value="Salary:"/>
+                <h:outputText value="#{employee.employeeSelected.salary}"/>
+
+                <h:outputText value="Assigned Projects:"/>
+                <h:selectManyListbox style="width:300px">
+                    <f:selectItems value="#{employee.employeeSelected.projects}" var="proj"
+                                   itemLabel="#{proj.name}" itemValue="#{proj}"/>
+                </h:selectManyListbox>
+
+                <p:commandButton id="cancelEmployeeDelete" value="Cancel" action="#{employee.onCloseDialog}"
+                                 oncomplete="employeeDeleteDialog.hide()"/>
+                <p:commandButton id="deleteEmployeeDelete" value="Delete"
+                                 action="#{employee.deleteEmployee}"
+                                 update=":projectForm:projecttable :employeeForm:employeetable"
+                                 onclick="employeeDeleteDialog.hide()"/>
+
+            </h:panelGrid>
+
+        </h:form>
+
+    </p:dialog>
+
+    <p:dialog id="employeeEditDialog" header="Employee Editing" widgetVar="empEditDialog" resizable="true" modal="true"
+              width="800" showEffect="explode" hideEffect="explode" dynamic="true">
+
+        <h:form id="employeetEditDialogForm">
+
+            <h:panelGrid id="displayEmployeeEditGrid" columns="2" cellpadding="4">
+
+                <h:outputText value="Name:"/>
+                <p:inputText value="#{employee.employeeSelected.name}" required="true"/>
+
+                <h:outputText value="Hire Date:"/>
+                <p:inputText value="#{employee.employeeSelected.hireDate}">
+                    <f:convertDateTime pattern="yyyy-MM-dd"/>
+                </p:inputText>
+
+                <h:outputText value="Position:"/>
+                <p:inputText value="#{employee.employeeSelected.position}" required="true"/>
+
+                <h:outputText value="Salary:"/>
+                <p:inputText value="#{employee.employeeSelected.salary}" required="true"/>
+
+                <h:outputText value="Assigned Projects:"/>
+                <h:selectManyListbox style="width:300px">
+                    <f:selectItems value="#{employee.employeeSelected.projects}" var="proj"
+                                   itemLabel="#{proj.name}" itemValue="#{proj}"/>
+                </h:selectManyListbox>
+
+                <h:outputText value="Change Projects:"/>
+                <p:selectManyMenu value="#{employee.projects}" required="true" converter="#{projectConverter}"
+                                  effect="drop" style="width:300px">
+                    <f:selectItems value="#{project.projects}" var="proj" itemLabel="#{proj.name}" itemValue="#{proj}"/>
+                    <p:ajax listener="#{employee.onProjectSelect}"/>
+                </p:selectManyMenu>
+
+                <p:commandButton id="cancelEmployeeEdit" value="Cancel">
+                    <p:ajax listener="#{employee.onCloseDialog}"/>
+                </p:commandButton>
+                <p:commandButton id="saveEmployeeEdit" value="Save" icon="ui-icon-disk"
+                                 actionListener="#{employee.editEmployee}"
+                                 update=":employeeForm:employeetable"
+                                 oncomplete="employeeEditDialog.hide()"/>
+
+            </h:panelGrid>
+
+        </h:form>
+
+    </p:dialog>
+
+    <p:dialog id="employeeViewDialog" header="Employee Detail" widgetVar="empViewDialog" resizable="true" modal="true"
+              width="800" showEffect="explode" hideEffect="explode">
+
+        <h:form>
+
+            <h:panelGrid id="displayEmployeeViewGrid" columns="2" cellpadding="4">
+
+                <h:outputText value="Employee ID:"/>
+                <h:outputText value="#{employee.employeeSelected.id}"/>
+
+                <h:outputText value="Name:"/>
+                <h:outputText value="#{employee.employeeSelected.name}"/>
+
+                <h:outputText value="Hire Date:"/>
+                <h:outputText value="#{employee.employeeSelected.hireDate}">
+                    <f:convertDateTime type="date" dateStyle="medium"/>
+                </h:outputText>
+
+                <h:outputText value="Position:"/>
+                <h:outputText value="#{employee.employeeSelected.position}"/>
+
+                <h:outputText value="Salary:"/>
+                <h:outputText value="#{employee.employeeSelected.salary}"/>
+
+                <h:outputText value="Assigned Projects:"/>
+                <h:selectManyListbox style="width:300px">
+                    <f:selectItems value="#{employee.employeeSelected.projects}" var="proj"
+                                   itemLabel="#{proj.name}" itemValue="#{proj}"/>
+                </h:selectManyListbox>
+
+                <p:commandButton id="closeEmployeeView" value="Close" action="#{employee.onCloseDialog}"
+                                 oncomplete="employeeViewDialog.hide()"/>
+
+            </h:panelGrid>
+
+        </h:form>
+
+    </p:dialog>
+
+</ui:composition>

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="scand.by.test.pojo">
+
+    <class name="Project" table="PROJECT">
+
+        <id name="id" type="java.lang.Long" column="ID">
+            <generator class="sequence">
+                <param name="sequence">PROJECT_ID_SEQUENCE</param>
+            </generator>
+        </id>
+
+        <property name="name" type="java.lang.String" column="NAME"/>
+        <property name="description" type="java.lang.String" column="DESCRIPTION"/>
+
+        <bag name="employees" table="EMPLOYEEPROJECT" inverse="true" lazy="false">
+            <key column="PROJECTID" not-null="true"/>
+            <many-to-many column="EMPLOYEEID" class="Employee"/>
+        </bag>
+
+        <bag name="reports" table="REPORT" inverse="true" lazy="false">
+            <key column="PROJECTID" not-null="true"/>
+            <one-to-many class="Report"/>
+        </bag>
+
+    </class>
+
+</hibernate-mapping>

@@ -1,0 +1,150 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <!-- **********************************ACTION DIALOGS FOR PROJECT********************************************** -->
+
+    <p:dialog id="projectAddDialog" header="Project Adding" widgetVar="projAddDialog" resizable="true" modal="true"
+              width="800" showEffect="explode" hideEffect="explode" dynamic="true">
+
+        <h:form id="projectAddDialogForm">
+
+            <h:panelGrid id="displayProjectAddGrid" columns="2" cellpadding="4">
+
+                <h:outputText value="Name:"/>
+                <p:inputText value="#{project.name}" required="true"/>
+
+                <h:outputText value="Description:"/>
+                <p:inputText id="addProjectDescription" value="#{project.description}" required="true"/>
+
+                <h:outputText value="Assign Employees:"/>
+                <p:selectManyMenu id="dropDownProjectAddDialog" value="#{project.employees}" required="true"
+                                  converter="#{employeeConverter}" effect="drop" style="width:300px">
+                    <f:selectItems value="#{employee.employees}" var="emp" itemLabel="#{emp.name}" itemValue="#{emp}"/>
+                    <p:ajax listener="#{project.onEmployeeSelect}"/>
+                </p:selectManyMenu>
+
+                <p:commandButton id="cancelProjectAdd" value="Cancel">
+                    <p:ajax listener="#{project.onCloseDialog}"/>
+                </p:commandButton>
+                <p:commandButton id="saveProjectAdd" value="Save" icon="ui-icon-disk"
+                                 action="#{project.addProject}"
+                                 update=":projectForm:projecttable"
+                                 oncomplete="projectAddDialog.hide()"/>
+
+            </h:panelGrid>
+
+        </h:form>
+
+    </p:dialog>
+
+    <p:dialog id="projectDeleteDialog" header="Project Deleting" widgetVar="projDeleteDialog" resizable="true"
+              modal="true" width="800" showEffect="explode" hideEffect="explode" dynamic="true">
+
+        <h:form>
+
+            <h:panelGrid id="displayProjectDeleteGrid" columns="2" cellpadding="4">
+
+                <h:outputText value="Project ID:"/>
+                <h:outputText value="#{project.projectSelected.id}"/>
+
+                <h:outputText value="Name:"/>
+                <h:outputText value="#{project.projectSelected.name}"/>
+
+                <h:outputText value="Description:"/>
+                <h:outputText value="#{project.projectSelected.description}"/>
+
+                <h:outputText value="Assigned Employees:"/>
+                <h:selectManyListbox style="width:300px">
+                    <f:selectItems value="#{project.projectSelected.employees}" var="emp"
+                                   itemLabel="#{emp.name}" itemValue="#{emp}"/>
+                </h:selectManyListbox>
+
+                <p:commandButton id="cancelProjectDelete" value="Cancel" action="#{project.onCloseDialog}"
+                                 oncomplete="projectDeleteDialog.hide()"/>
+                <p:commandButton id="deleteProjectDelete" value="Delete"
+                                 action="#{project.deleteProject}"
+                                 update=":projectForm:projecttable"
+                                 onclick="projectDeleteDialog.hide()"/>
+
+            </h:panelGrid>
+
+        </h:form>
+
+    </p:dialog>
+
+    <p:dialog id="projectEditDialog" header="Project Editing" widgetVar="projEditDialog" resizable="true" modal="true"
+              width="800" showEffect="explode" hideEffect="explode" dynamic="true">
+
+        <h:form id="projectEditDialogForm">
+
+            <h:panelGrid id="displayProjectEditGrid" columns="2" cellpadding="4">
+
+                <h:outputText value="Name:"/>
+                <p:inputText value="#{project.projectSelected.name}" required="true"/>
+
+                <h:outputText value="Description:"/>
+                <p:inputText value="#{project.projectSelected.description}" required="true"/>
+
+                <h:outputText value="Assigned Employees:"/>
+                <h:selectManyListbox style="width:300px">
+                    <f:selectItems value="#{project.projectSelected.employees}" var="emp"
+                                   itemLabel="#{emp.name}" itemValue="#{emp}"/>
+                </h:selectManyListbox>
+
+                <h:outputText value="Change Employees:"/>
+                <p:selectManyMenu value="#{project.employees}" required="true" converter="#{employeeConverter}"
+                                  effect="drop" style="width:300px">
+                    <f:selectItems value="#{employee.employees}" var="emp" itemLabel="#{emp.name}" itemValue="#{emp}"/>
+                    <p:ajax listener="#{project.onEmployeeSelect}"/>
+                </p:selectManyMenu>
+
+                <p:commandButton id="cancelProjectEdit" value="Cancel">
+                    <p:ajax listener="#{project.onCloseDialog}"/>
+                </p:commandButton>
+                <p:commandButton id="saveProjectEdit" value="Save" icon="ui-icon-disk"
+                                 actionListener="#{project.editProject}"
+                                 update=":projectForm:projecttable :employeeForm:employeetable"
+                                 oncomplete="projectEditDialog.hide()"/>
+
+            </h:panelGrid>
+
+        </h:form>
+
+    </p:dialog>
+
+    <p:dialog id="projectViewDialog" header="Project Detail" widgetVar="projViewDialog" resizable="true" modal="true"
+              width="800" showEffect="explode" hideEffect="explode">
+
+        <h:form>
+
+            <h:panelGrid id="displayProjectViewGrid" columns="2" cellpadding="4">
+
+                <h:outputText value="Project ID:"/>
+                <h:outputText value="#{project.projectSelected.id}"/>
+
+                <h:outputText value="Name:"/>
+                <h:outputText value="#{project.projectSelected.name}"/>
+
+                <h:outputText value="Description:"/>
+                <h:outputText value="#{project.projectSelected.description}"/>
+
+                <h:outputText value="Assigned Employees:"/>
+                <h:selectManyListbox style="width:300px">
+                    <f:selectItems value="#{project.projectSelected.employees}" var="emp"
+                                   itemLabel="#{emp.name}" itemValue="#{emp}"/>
+                </h:selectManyListbox>
+
+                <p:commandButton id="closeProjectView" value="Close" action="#{project.onCloseDialog}"
+                                 oncomplete="projectViewDialog.hide()"/>
+
+            </h:panelGrid>
+
+        </h:form>
+
+    </p:dialog>
+
+</ui:composition>

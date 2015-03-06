@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="scand.by.test.pojo">
+
+    <class name="Report" table="REPORT">
+
+        <id name="id" type="java.lang.Long" column="ID">
+            <generator class="sequence">
+                <param name="sequence">REPORT_ID_SEQUENCE</param>
+            </generator>
+        </id>
+
+        <property name="createDate" type="java.util.Date" column="CREATEDATE"/>
+        <property name="body" type="java.lang.String" column="BODY"/>
+
+        <many-to-one name="employee" column="EMPLOYEEID" class="Employee" lazy="false"/>
+        <many-to-one name="project" column="PROJECTID" class="Project" lazy="false"/>
+
+    </class>
+
+</hibernate-mapping>

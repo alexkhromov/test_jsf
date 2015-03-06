@@ -1,0 +1,238 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<!-- *********************************************MAIN FORM**************************************************** -->
+
+<p:layoutUnit position="west" size="500">
+
+    <p:layout>
+
+        <p:layoutUnit position="center">
+
+            <h:form id="projectForm">
+
+                <p:dataTable id="projecttable" value="#{project.projects}" var="proj"
+                             rowKey="#{proj.id}"
+                             scrollable="true"
+                             resizableColumns="true"
+                             selection="#{project.projectSelected}"
+                             selectionMode="single">
+
+                    <p:ajax event="rowSelect"
+                            update=":#{p:component('reporttable')} :#{p:component('employeetable')}"
+                            listener="#{project.onRowSelect}"
+                            process="@this"/>
+
+                    <p:column>
+                        <f:facet name="header">Project Name</f:facet>
+                        <h:outputText value="#{proj.name}"/>
+                    </p:column>
+
+                </p:dataTable>
+
+            </h:form>
+
+        </p:layoutUnit>
+
+        <p:layoutUnit position="south">
+
+            <h:form>
+
+                <h:panelGrid id="displayProjectToolbarGrid" columns="2" style="margin: 0 auto">
+
+                    <p:commandButton id="addProj" value="Add Project" update=":#{p:component('projectAddDialog')}"
+                                     oncomplete="projAddDialog.show()" styleClass="commandBtn">
+                    </p:commandButton>
+                    <p:commandButton id="deleteProj" value="Delete Project"
+                                     update=":#{p:component('projectDeleteDialog')}"
+                                     oncomplete="projDeleteDialog.show()" styleClass="commandBtn">
+                    </p:commandButton>
+                    <p:commandButton id="editProj" value="Edit Project"
+                                     update=":#{p:component('projectEditDialog')}"
+                                     oncomplete="projEditDialog.show()" styleClass="commandBtn">
+                    </p:commandButton>
+                    <p:commandButton id="viewProj" value="View Project"
+                                     update=":#{p:component('projectViewDialog')}"
+                                     oncomplete="projViewDialog.show()" styleClass="commandBtn">
+                    </p:commandButton>
+
+                </h:panelGrid>
+
+            </h:form>
+
+        </p:layoutUnit>
+
+    </p:layout>
+
+</p:layoutUnit>
+
+<p:layoutUnit position="center">
+
+    <p:layout>
+
+        <p:layoutUnit position="north" size="50%">
+
+            <p:layout>
+
+                <p:layoutUnit position="center" style="border: none">
+
+                    <h:form id="reportForm">
+
+                        <p:dataTable id="reporttable" value="#{project.projectSelected.reports}" var="repo"
+                                     rowKey="#{repo.id}"
+                                     scrollable="true"
+                                     resizableColumns="true"
+                                     selection="#{report.reportSelected}"
+                                     selectionMode="single">
+
+                            <p:ajax event="rowSelect" listener="#{report.onRowSelect}" process="@this"/>
+
+                            <p:column>
+                                <f:facet name="header">Report ID</f:facet>
+                                <h:outputText value="#{repo.id}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">Create Date</f:facet>
+                                <h:outputText value="#{repo.createDate}">
+                                    <f:convertDateTime type="date" dateStyle="medium"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">Body</f:facet>
+                                <h:outputText value="#{repo.body}"/>
+                            </p:column>
+
+                        </p:dataTable>
+
+                    </h:form>
+
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south">
+
+                    <h:form>
+
+                        <h:panelGrid id="displayReportToolbarGrid" columns="4" style="margin: 0 auto">
+
+                            <p:commandButton id="addRepo" value="Add Report" update=":#{p:component('reportAddDialog')}"
+                                             oncomplete="repoAddDialog.show()" styleClass="commandBtn">
+                            </p:commandButton>
+                            <p:commandButton id="deleteRepo" value="Delete Report"
+                                             update=":#{p:component('reportDeleteDialog')}"
+                                             oncomplete="repoDeleteDialog.show()" styleClass="commandBtn">
+                            </p:commandButton>
+                            <p:commandButton id="editRepo" value="Edit Report"
+                                             update=":#{p:component('reportEditDialog')}"
+                                             oncomplete="repoEditDialog.show()" styleClass="commandBtn">
+                            </p:commandButton>
+                            <p:commandButton id="viewRepo" value="View Report"
+                                             update=":#{p:component('reportViewDialog')}"
+                                             oncomplete="repoViewDialog.show()" styleClass="commandBtn">
+                            </p:commandButton>
+
+                        </h:panelGrid>
+
+                    </h:form>
+
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </p:layoutUnit>
+
+        <p:layoutUnit position="center" minSize="10" maxSize="15" style="background-color: #778899"/>
+
+        <p:layoutUnit position="south" size="50%">
+
+            <p:layout>
+
+                <p:layoutUnit position="center" style="border: none">
+
+                    <h:form id="employeeForm">
+
+                        <p:dataTable id="employeetable" value="#{project.projectSelected.employees}" var="emp"
+                                     rowKey="#{emp.id}"
+                                     scrollable="true"
+                                     resizableColumns="true"
+                                     selection="#{employee.employeeSelected}"
+                                     selectionMode="single">
+
+                            <p:ajax event="rowSelect" listener="#{employee.onRowSelect}" process="@this"/>
+
+                            <p:column>
+                                <f:facet name="header">Employee ID</f:facet>
+                                <h:outputText value="#{emp.id}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">Name</f:facet>
+                                <h:outputText value="#{emp.name}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">Hire Date</f:facet>
+                                <h:outputText value="#{emp.hireDate}">
+                                    <f:convertDateTime type="date" dateStyle="medium"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">Position</f:facet>
+                                <h:outputText value="#{emp.position}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">Salary</f:facet>
+                                <h:outputText value="#{emp.salary}"/>
+                            </p:column>
+
+                        </p:dataTable>
+
+                    </h:form>
+
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south">
+
+                    <h:form>
+
+                        <h:panelGrid id="displayEmployeeToolbarGrid" columns="4" style="margin: 0 auto">
+
+                            <p:commandButton id="addEmp" value="Add Employee"
+                                             update=":#{p:component('employeeAddDialog')}"
+                                             oncomplete="empAddDialog.show()" styleClass="commandBtn">
+                            </p:commandButton>
+                            <p:commandButton id="deleteEmp" value="Delete Employee"
+                                             update=":#{p:component('employeeDeleteDialog')}"
+                                             oncomplete="empDeleteDialog.show()" styleClass="commandBtn">
+                            </p:commandButton>
+                            <p:commandButton id="editEmp" value="Edit Employee"
+                                             update=":#{p:component('employeeEditDialog')}"
+                                             oncomplete="empEditDialog.show()" styleClass="commandBtn">
+                            </p:commandButton>
+                            <p:commandButton id="viewEmp" value="View Employee"
+                                             update=":#{p:component('employeeViewDialog')}"
+                                             oncomplete="empViewDialog.show()" styleClass="commandBtn">
+                            </p:commandButton>
+
+                        </h:panelGrid>
+
+                    </h:form>
+
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </p:layoutUnit>
+
+    </p:layout>
+
+</p:layoutUnit>
+
+</ui:composition>
